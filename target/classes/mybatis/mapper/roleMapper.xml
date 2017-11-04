@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newgen.mapper.RoleMapper">
+<resultMap type="com.newgen.pojo.Role" id="roleChainMap">
+	<id property="id"  column="r_id"/>
+	<result property="name" column="r_name"/>
+	<result property="desc" column="r_desc"/>
+	<result property="canlogin" column="r_canlogin"/>
+	<collection property="permissions" ofType="com.newgen.pojo.Permission">
+		<id property="id" column="p_id"/>
+		<result property="name" column="p_name"/>
+		<result property="desc" column="p_desc"/>
+		<result property="key" column="p_canlogin"/>
+		<collection property="menus" ofType="com.newgen.pojo.Menu">
+			<id property="id" column="m_id"/>
+			<result property="name" column="m_name"/>
+			<result property="url" column="m_url"/>
+			<result property="desc" column="m_desc"/>
+			<result property="type" column="m_type"/>
+			<result property="parentid" column="m_parentid"/>
+			<result property="isshow" column="m_isshow"/>
+			<result property="icon" column="m_icon"/>
+			<result property="sort" column="m_sort"/>
+		</collection>
+	</collection>
+</resultMap>
+<select id="selectByUserId" resultMap="roleChainMap">
+	SELECT pm.*,m.id m_id,m.name m_name,m.url m_url,m.desc m_desc,m.type m_type,m.parentid m_parentid,m.isshow m_isshow,m.icon m_icon,m.sort m_sort FROM t_menu m LEFT JOIN
+		(SELECT p.*,t_permission_menu.menuid FROM t_permission_menu RIGHT JOIN 
+			(SELECT rp.r_id,rp.r_name,rp.r_desc,rp.r_canlogin,t_permission.id p_id,t_permission.name p_name,t_permission.desc p_desc,t_permission.key p_key FROM t_permission RIGHT JOIN 
+				(SELECT r.id r_id,r.name r_name,r.desc r_desc,r.canlogin r_canlogin, t_role_permission.permissionid FROM t_role_permission RIGHT JOIN
+					(SELECT t_role.* FROM t_role 
+					INNER JOIN
+						(SELECT roleid FROM t_user_role WHERE t_user_role.userid=${userid}) ur 
+					ON ur.roleid = t_role.id
+					) r
+				ON r.id = t_role_permission.roleid ) rp
+			ON t_permission.id = rp.permissionid) p
+		ON t_permission_menu.id = p.p_id) pm
+	ON pm.menuid = m.id
+</select>
+</mapper>
