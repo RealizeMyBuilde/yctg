@@ -8,9 +8,3 @@ src/main/resources/config.properties
 logs/ssm.log
 src/main/resources/config.properties
 target/classes/com/newgen/controller/UserController.class
-target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
-target/tomcat/logs/access_log.2017-11-04
-target/tomcat/logs/access_log.2017-11-04
-logs/ssm.log
-*.2017-11-04
-target/classes/config.properties

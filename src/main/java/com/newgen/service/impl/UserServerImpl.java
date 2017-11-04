@@ -17,8 +17,7 @@ public class UserServerImpl implements UserService {
 	public User selectUserByUsername(String username) {
 		User user = new User();
 		user.setUsername(username);
-		User curUser = userMapper.selectOne(user);
-		return curUser;
+		return userMapper.selectOne(user);
 	}
 
 }
