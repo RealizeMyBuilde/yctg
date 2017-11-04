@@ -1,0 +1,10 @@
+
+*.log
+logs/ssm.log
+*.properties
+*.log
+logs/ssm.log
+src/main/resources/config.properties
+logs/ssm.log
+src/main/resources/config.properties
+target/classes/com/newgen/controller/UserController.class
